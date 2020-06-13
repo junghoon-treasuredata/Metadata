@@ -1,0 +1,59 @@
+_export:
+  td:
+    database: db_jung_meta_data
+    api_endpoint: 'https://api.treasuredata.com'
+    workflow_endpoint: 'https://api-workflow.treasuredata.com'
+    
+  table:
+    database_table_usage: database_table_usage
+    user_list: user_list
+    database_permissions: database_permissions
+    workflow_list: workflow_list
+    policies: policies
+    users_permissions: users_permissions
+    users_policies: users_policies
+    
+    
++prepare_tables:
+  +create_database1:
+    td_ddl>:
+    create_databases: ['${td.database}']
+  +create_table1:
+    td_ddl>:
+    create_tables: ['${table.database_table_usage}']
+  +create_table2:
+    td_ddl>:
+    create_tables: ['${table.user_list}']
+  +create_table3:
+    td_ddl>:
+    create_tables: ['${table.database_permissions}']
+  +create_table4:
+    td_ddl>:
+    create_tables: ['${table.workflow_list}']
+  +create_table5:
+    td_ddl>:
+    create_tables: ['${table.policies}']
+  +create_table6:
+    td_ddl>:
+    create_tables: ['${table.users_permissions}']
+  +create_table7:
+    td_ddl>:
+    create_tables: ['${table.users_policies}']
+
++run_python:
+  docker:
+    image: "digdag/digdag-python:3.7"
+  py>: script1.main
+  _env:
+    td_apikey: ${secret:td.apikey}
+    td_api_endpoint: ${td.api_endpoint}
+    td_workflow_endpoint: ${td.workflow_endpoint}
+    td_database: ${td.database}
+    table_database_table_usage: ${table.database_table_usage}
+    table_user_list: ${table.user_list}
+    table_database_permissions: ${table.database_permissions}
+    table_workflow_list: ${table.workflow_list}
+    table_policies: ${table.policies}
+    table_users_permissions: ${table.users_permissions}
+    table_users_policies: ${table.users_policies}
+    
